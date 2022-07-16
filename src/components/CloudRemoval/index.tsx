@@ -1,24 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './index.module.less';
+import { HttpRequest } from '@/utils/HttpRequest';
 import Arrow from '@/assets/arrow_right.svg';
 import Loading from '@/assets/loading.svg';
-import cloud from '@/assets/test.jpg';
 
 const CloudRemoval = () => {
   const [isHandle, setIsHandle] = useState(false);
+  const [output, setOutput] = useState('');
+
+  const removeCloud = async (img: string) => {
+    let formData = new FormData();
+    formData.append('image', img);
+    console.log('handling...');
+    const response = await HttpRequest(
+      'http://127.0.0.1:5000/predict',
+      'POST',
+      formData
+    );
+    if (response) {
+      setOutput('data:image/jpeg;base64, ' + response);
+    }
+    setIsHandle(false);
+  };
+
   return (
     <div className={styles.content}>
-      <Upload />
+      <Upload removeCloud={removeCloud} />
       {isHandle ? <Loading className={styles.loading} /> : <Arrow />}
-      <Download />
+      <Download output={output} />
     </div>
   );
 };
 
-const Upload = () => {
+const Upload = (props: { removeCloud: any }) => {
   const [input, setInput] = useState('');
+  const [upload, setUpload] = useState<File>();
+
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files;
+    file && setUpload(file[0]);
     const reader = new FileReader();
     file && reader.readAsDataURL(file[0]);
     reader.onload = () => {
@@ -38,21 +58,29 @@ const Upload = () => {
         )}
       </div>
       <div className={styles.button_container}>
-        <div className={styles.button}>去云</div>
+        <div
+          className={styles.button}
+          onClick={() => props.removeCloud(upload)}
+        >
+          去云
+        </div>
       </div>
     </div>
   );
 };
 
-const Download = () => {
-  const [output, setOutput] = useState(cloud);
+const Download = (props: { output: string }) => {
   return (
     <div className={styles.output_container}>
       <div className={styles.output_container_content}>
-        {output ? <img src={output} /> : '暂无内容'}
+        {props.output ? (
+          <img src={props.output} style={{ width: '100%', height: '100%' }} />
+        ) : (
+          '暂无内容'
+        )}
       </div>
       <div className={styles.button_container}>
-        <a className={styles.button} download="output.jpg" href={cloud}>
+        <a className={styles.button} download="output.jpg" href={props.output}>
           下载
         </a>
       </div>
