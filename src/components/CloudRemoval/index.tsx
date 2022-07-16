@@ -8,10 +8,10 @@ const CloudRemoval = () => {
   const [isHandle, setIsHandle] = useState(false);
   const [output, setOutput] = useState('');
 
-  const removeCloud = async (img: string) => {
+  const removeCloud = async (img: File) => {
+    setIsHandle(true);
     let formData = new FormData();
     formData.append('image', img);
-    console.log('handling...');
     const response = await HttpRequest(
       'http://127.0.0.1:5000/predict',
       'POST',
@@ -32,7 +32,7 @@ const CloudRemoval = () => {
   );
 };
 
-const Upload = (props: { removeCloud: any }) => {
+const Upload = (props: { removeCloud: (img: File) => void }) => {
   const [input, setInput] = useState('');
   const [upload, setUpload] = useState<File>();
 
@@ -44,6 +44,10 @@ const Upload = (props: { removeCloud: any }) => {
     reader.onload = () => {
       setInput(reader.result as string);
     };
+  };
+
+  const handleClick = () => {
+    upload && props.removeCloud(upload);
   };
   return (
     <div className={styles.input_container}>
@@ -58,10 +62,7 @@ const Upload = (props: { removeCloud: any }) => {
         )}
       </div>
       <div className={styles.button_container}>
-        <div
-          className={styles.button}
-          onClick={() => props.removeCloud(upload)}
-        >
+        <div className={styles.button} onClick={handleClick}>
           去云
         </div>
       </div>
