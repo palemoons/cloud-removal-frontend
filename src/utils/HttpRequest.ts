@@ -1,4 +1,4 @@
-export async function HttpRequest(url: string, method: string, data: any) {
+export async function HttpRequest(url: string, method: string, data: FormData) {
   const response = await fetch(url, {
     method: method,
     body: data,

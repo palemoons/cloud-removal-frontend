@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 const isDev = process.env.NODE_ENV === 'development';
 
 module.exports = {
@@ -15,7 +16,6 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
-        options: { presets: ['@babel/env'] },
       },
       { test: /\.tsx?$/, loader: 'ts-loader' },
       {

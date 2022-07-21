@@ -1,8 +1,23 @@
-# Hello World!
+# Cloud-Removal-Frontend
 
-> 一个手搓工具链的小尝试
+Frontend service of 3S Cloud Removal Project.
 
-主要参考：
+# Usage
 
-- [Creating a React App… From Scratch.](https://medium.com/@JedaiSaboteur/creating-a-react-app-from-scratch-f3c693b84658)
-- [WebpackTutorial](https://github.com/AriaFallah/WebpackTutorial/)
+1. Install package.
+
+```sh
+yarn
+```
+
+2. Run serivce in dev mode.
+
+```sh
+yarn dev
+```
+
+3. Compile for production.
+
+```sh
+yarn build
+```

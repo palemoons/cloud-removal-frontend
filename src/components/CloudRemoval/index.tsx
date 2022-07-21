@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './index.module.less';
 import { HttpRequest } from '@/utils/HttpRequest';
 import Arrow from '@/assets/arrow_right.svg';
@@ -10,7 +10,7 @@ const CloudRemoval = () => {
 
   const removeCloud = async (img: File) => {
     setIsHandle(true);
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('image', img);
     const response = await HttpRequest(
       'http://127.0.0.1:5000/predict',
